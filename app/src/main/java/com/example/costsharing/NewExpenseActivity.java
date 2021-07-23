@@ -12,7 +12,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewExpense extends AppCompatActivity {
+public class NewExpenseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,9 @@ public class NewExpense extends AppCompatActivity {
         spinner.setAdapter(dataAdapter);
     }
 
-
-
     public void BackToMain(View v) {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
+
 }
