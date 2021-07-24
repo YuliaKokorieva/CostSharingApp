@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void removeItem(long id) {
-        mDatabase.delete(TripContract.TripsTable.TABLE_NAME,
-                TripContract.TripsTable.COLUMN_TripID + "=" + id, null);
+        mDatabase.delete(CostSharingContract.TripsTable.TABLE_NAME,
+                CostSharingContract.TripsTable._ID + "=" + id, null);
         mAdapter.swapCursor(getAllItems());
     }
 
@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Cursor getAllItems() {
         return mDatabase.query(
-                TripContract.TripsTable.TABLE_NAME,
-                null, null, null, null, null, TripContract.TripsTable.COLUMN_TripName + " ASC"
+                CostSharingContract.TripsTable.TABLE_NAME,
+                null, null, null, null, null, CostSharingContract.TripsTable.COLUMN_TripName + " ASC"
         );
     }
 

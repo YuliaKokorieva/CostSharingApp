@@ -1,29 +1,39 @@
 package com.example.costsharing;
 
-import java.util.UUID;
 
 public class Participant {
 
-    private String id;
+    private int id;
     private String name;
-    private String tripID;
+    private int tripID;
 
-    public Participant(){
-        this.id = UUID.randomUUID().toString();
+    public Participant() {}
+    public Participant(String name, int tripID) {
+        this.name = name;
+        this.tripID = tripID;
     }
-    public String getId() {return id; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getTripID() {return tripID; }
-    public void setTripId(String id) {this.tripID = id;}
+    public int getTripID() {
+        return tripID;
+    }
 
-
-
-
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
 }

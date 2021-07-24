@@ -43,7 +43,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         if (!mCursor.moveToPosition(position)) {
             return;
         }
-        String name = mCursor.getString(mCursor.getColumnIndex(TripContract.TripsTable.COLUMN_TripName));
+        String name = mCursor.getString(mCursor.getColumnIndex(CostSharingContract.TripsTable.COLUMN_TripName));
         holder.nameText.setText(name);
     }
 

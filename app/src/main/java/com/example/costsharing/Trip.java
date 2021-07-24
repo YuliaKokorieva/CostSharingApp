@@ -1,17 +1,15 @@
 package com.example.costsharing;
 
-import java.util.UUID;
 
 public class Trip {
 
     private String name;
-    private String id;
+    private int id;
 
-    public Trip(){
-        this.id = UUID.randomUUID().toString();
-    }
-    public String getId() {
-        return id;
+    public Trip() {}
+
+    public Trip(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -22,7 +20,11 @@ public class Trip {
         this.name = name;
     }
 
-    public Trip(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

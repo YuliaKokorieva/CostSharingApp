@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +11,6 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewTripActivity extends AppCompatActivity {
     private SQLiteDatabase trDatabase;
@@ -70,8 +65,8 @@ public class NewTripActivity extends AppCompatActivity {
         ContentValues cvTrip = new ContentValues();
 
         String name = tripName.getText().toString();
-        cvTrip.put(TripContract.TripsTable.COLUMN_TripName, name);
-        trDatabase.insert(TripContract.TripsTable.TABLE_NAME, null, cvTrip);
+        cvTrip.put(CostSharingContract.TripsTable.COLUMN_TripName, name);
+        trDatabase.insert(CostSharingContract.TripsTable.TABLE_NAME, null, cvTrip);
 
 
         String participant1 = part1Name.getText().toString();
