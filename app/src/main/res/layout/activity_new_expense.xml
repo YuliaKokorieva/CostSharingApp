@@ -250,36 +250,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp">
-
-                <TextView
-                    android:id="@+id/tv_split"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Split by default?"
-                    android:textColor="@color/dark_navy"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="0dp" />
-
-                <Spinner
-                    android:id="@+id/spinner_split"
-                    android:layout_width="153dp"
-                    android:layout_height="53dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"
-                    tools:layout_editor_absoluteX="175dp"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:ignore="MissingConstraints" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/b_save"
                 android:layout_width="match_parent"
@@ -289,8 +259,8 @@
                 android:layout_marginRight="100dp"
                 android:background="@drawable/button_drawable"
                 android:text="SAVE"
-                android:textColor="@color/white" />
 
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

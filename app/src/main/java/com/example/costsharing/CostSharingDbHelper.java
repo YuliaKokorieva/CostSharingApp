@@ -77,13 +77,30 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         addTrip(t1);
     }
 
-    private void addTrip(Trip trip) {
+    public void addTrip(Trip trip) {
         ContentValues cv = new ContentValues();
         cv.put(TripsTable.COLUMN_TripName, trip.getName());
         db.insert(TripsTable.TABLE_NAME, null, cv);
     }
 
-    private void addExpense( Expense exp) {
+    public int getTripIdByName(String tripName) {
+        String query = "SELECT * FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable.COLUMN_TripName + " =?";
+        Cursor c = db.rawQuery(query, new String[] {tripName});
+        int id = -1;
+        try {
+            if (c.moveToFirst()){
+                id = c.getInt(c.getColumnIndexOrThrow("_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c!=null) c.close();
+        }
+        return id;
+
+    }
+
+    public void addExpense( Expense exp) {
         ContentValues cv = new ContentValues();
         cv.put(ExpensesTable.COLUMN_ExpName, exp.getName());
         cv.put(ExpensesTable.COLUMN_ExpValue, exp.getValue());
@@ -92,7 +109,7 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         db.insert(ExpensesTable.TABLE_NAME, null, cv);
     }
 
-    private void addParticipant(Participant part) {
+    public void addParticipant(Participant part) {
         ContentValues cv = new ContentValues();
         cv.put(ParticipantsTable.COLUMN_PartName, part.getName());
         cv.put(ParticipantsTable.COLUMN_TripID, part.getTripID());
@@ -116,12 +133,13 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         return tripsList;
     }
 
-    public List<Expense> getExpenses(int TripID) {
+    public List<Expense> getExpensesForTrip(int TripID) {
         ArrayList<Expense> expList = new ArrayList<>();
         db = getReadableDatabase();
+        String query = "SELECT * FROM " + ExpensesTable.TABLE_NAME +
+                " WHERE " + ExpensesTable.COLUMN_TripID + " =?";
 
-        Cursor c  = db.rawQuery("SELECT * FROM " + ExpensesTable.TABLE_NAME +
-                " WHERE " + ExpensesTable.COLUMN_TripID + " =?", SELECTIONARGS);
+        Cursor c  = db.rawQuery(query, new String[] { Integer.toString(TripID) });
 
         if (c.moveToFirst()) {
             do {

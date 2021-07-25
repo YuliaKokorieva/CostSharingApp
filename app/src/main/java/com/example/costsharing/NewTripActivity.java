@@ -1,6 +1,5 @@
 package com.example.costsharing;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -16,10 +15,8 @@ public class NewTripActivity extends AppCompatActivity {
     private SQLiteDatabase trDatabase;
     private EditText tripName;
     private EditText part1Name;
-    private EditText part2Name;
-    private EditText part3Name;
-    private EditText part4Name;
-    private EditText part5Name;
+
+    private Button bSave;
 
 
 //    private List<Participant> participants = new ArrayList();
@@ -34,16 +31,7 @@ public class NewTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_trip);
 
 
-        CostSharingDbHelper dbHelper = new CostSharingDbHelper(this);
-        trDatabase = dbHelper.getWritableDatabase();
-
-        tripName = findViewById(R.id.et_name);
-        part1Name = findViewById(R.id.et_part1);
-        part2Name = findViewById(R.id.et_part2);
-        part3Name = findViewById(R.id.et_part3);
-        part4Name = findViewById(R.id.et_part4);
-        part5Name = findViewById(R.id.et_part5);
-        Button bSave = findViewById(R.id.b_save);
+        bSave = findViewById(R.id.b_save);
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,50 +42,50 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     private void saveItem() {
-        if (tripName.getText().toString().trim().length() ==0 )  {
-//            || part1Name.getText().toString().trim().length() ==0
+        tripName = findViewById(R.id.et_name);
+        part1Name = findViewById(R.id.et_part1);
+
+        CostSharingDbHelper dbHelper = new CostSharingDbHelper(this);
+
+        if (tripName.getText().toString().trim().length() ==0 || part1Name.getText().toString().trim().length() ==0 )  {
+//
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Enter name of the trip (and at least one participant)!",
+                    "Enter name of the trip and at least one participant!",
                     Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
-        ContentValues cvTrip = new ContentValues();
+        String sTripName = tripName.getText().toString();
 
-        String name = tripName.getText().toString();
-        cvTrip.put(CostSharingContract.TripsTable.COLUMN_TripName, name);
-        trDatabase.insert(CostSharingContract.TripsTable.TABLE_NAME, null, cvTrip);
-
-
-        String participant1 = part1Name.getText().toString();
-
-        if (part2Name.getText().toString().trim().length() !=0) {
-            String participant2 = part2Name.getText().toString();
-        }
-        if (part3Name.getText().toString().trim().length() !=0) {
-            String participant3 = part3Name.getText().toString();
-        }
-        if (part4Name.getText().toString().trim().length() !=0) {
-            String participant4 = part4Name.getText().toString();
-        }
-        if (part5Name.getText().toString().trim().length() !=0) {
-            String participant5 = part5Name.getText().toString();
-        }
+        Trip newTrip = new Trip(sTripName);
+        dbHelper.addTrip(newTrip);
 
 
+        for (int i=1; i<=5; i++) {
+            String partID = "et_part" + i;
+            int resID = getResources().getIdentifier(partID, "id", getPackageName());
+
+            EditText etPart = findViewById(resID);
 
 
-
-    }
-
-
-
+            if (etPart.getText().toString().trim().length() !=0) {
+                String newPartName = etPart.getText().toString();
+                Participant newPart = new Participant();
+                newPart.setName(newPartName);
+                newPart.setTripID(dbHelper.getTripIdByName(sTripName));
+                dbHelper.addParticipant(newPart);
+            }
+    }}
 
     public void BackToMain(View v) {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
+    public void GoToAddExpense(View v) {
+        Intent i = new Intent(this, NewExpenseActivity.class);
+        startActivity(i);
+    }
 }
 
 
@@ -132,4 +120,3 @@ public class NewTripActivity extends AppCompatActivity {
 //        view.inflateView(p, ++count);
 //        participantsFrame.addView(view);
 //    }
-
