@@ -45,7 +45,7 @@ public class NewTripActivity extends AppCompatActivity {
         tripName = findViewById(R.id.et_name);
         part1Name = findViewById(R.id.et_part1);
 
-        CostSharingDbHelper dbHelper = new CostSharingDbHelper(this);
+        CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
 
         if (tripName.getText().toString().trim().length() ==0 || part1Name.getText().toString().trim().length() ==0 )  {
 //
@@ -87,7 +87,6 @@ public class NewTripActivity extends AppCompatActivity {
         startActivity(i);
     }
 }
-
 
 
 //        participantsFrame = findViewById(R.id.participants_frame);

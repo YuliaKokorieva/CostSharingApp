@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CostSharingDbHelper dbHelper = new CostSharingDbHelper(this);
+        CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
         mDatabase = dbHelper.getReadableDatabase();
 
         RecyclerView recyclerView = findViewById(R.id.rv_list_of_trips);

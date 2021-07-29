@@ -16,8 +16,18 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase db;
 
-    public CostSharingDbHelper(Context context) {
+    private static CostSharingDbHelper instance;
+
+    private CostSharingDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        db = getWritableDatabase(); // Fix from here: https://stackoverflow.com/questions/5024223/sqliteopenhelper-failing-to-call-oncreate
+    }
+
+    static public CostSharingDbHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new CostSharingDbHelper(context);
+        }
+        return instance;
     }
 
     @Override
