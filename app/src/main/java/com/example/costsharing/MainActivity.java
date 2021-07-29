@@ -26,7 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rv_list_of_trips);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new TripAdapter(this, getAllItems());
+        mAdapter = new TripAdapter(this, getAllItems(), new TripAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(long id) {
+
+            }
+        });
         recyclerView.setAdapter(mAdapter);
 
     }
