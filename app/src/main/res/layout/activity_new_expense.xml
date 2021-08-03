@@ -111,7 +111,7 @@
                     android:layout_gravity="center"
                     android:gravity="center_vertical"
                     android:padding="5dp"
-                    android:text="Addding a new expense"
+                    android:text="Adding a new expense"
                     android:textColor="@color/navy"
                     android:textSize="27sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -120,6 +120,17 @@
                     tools:layout_editor_absoluteY="0dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <TextView
+                android:id="@+id/tv_TripInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="40dp"
+                android:textSize="15sp"
+                android:textColor="@color/dark_navy"/>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -214,9 +225,8 @@
                     android:layout_height="53dp"
                     android:background="@android:drawable/btn_dropdown"
                     android:spinnerMode="dropdown"
-                    tools:layout_editor_absoluteX="175dp"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:ignore="MissingConstraints" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -246,7 +256,8 @@
                     android:spinnerMode="dropdown"
                     tools:layout_editor_absoluteX="175dp"
                     tools:layout_editor_absoluteY="0dp"
-                    tools:ignore="MissingConstraints" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -261,6 +272,8 @@
                 android:text="SAVE"
 
                 android:textColor="@color/white" />
+
+
 
 
         </LinearLayout>

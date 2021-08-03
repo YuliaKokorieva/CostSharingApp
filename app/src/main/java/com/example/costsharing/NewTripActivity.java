@@ -15,21 +15,13 @@ public class NewTripActivity extends AppCompatActivity {
     private SQLiteDatabase trDatabase;
     private EditText tripName;
     private EditText part1Name;
-
     private Button bSave;
 
-
-//    private List<Participant> participants = new ArrayList();
-//
-//    LinearLayout participantsFrame;
-//
-//    private int count = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
-
 
         bSave = findViewById(R.id.b_save);
 
@@ -45,6 +37,8 @@ public class NewTripActivity extends AppCompatActivity {
         tripName = findViewById(R.id.et_name);
         part1Name = findViewById(R.id.et_part1);
 
+        int tripID;
+
         CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
 
         if (tripName.getText().toString().trim().length() ==0 || part1Name.getText().toString().trim().length() ==0 )  {
@@ -59,6 +53,7 @@ public class NewTripActivity extends AppCompatActivity {
 
         Trip newTrip = new Trip(sTripName);
         dbHelper.addTrip(newTrip);
+        tripID = dbHelper.getTripIdByName(sTripName);
 
 
         for (int i=1; i<=5; i++) {
@@ -67,24 +62,28 @@ public class NewTripActivity extends AppCompatActivity {
 
             EditText etPart = findViewById(resID);
 
-
             if (etPart.getText().toString().trim().length() !=0) {
                 String newPartName = etPart.getText().toString();
-                Participant newPart = new Participant();
-                newPart.setName(newPartName);
-                newPart.setTripID(dbHelper.getTripIdByName(sTripName));
+
+                Participant newPart = new Participant(newPartName, tripID);
+
                 dbHelper.addParticipant(newPart);
             }
-    }}
+        }
+
+        NewExpenseActivity.openActivity(tripID, NewTripActivity.this);
+
+
+    }
 
     public void BackToMain(View v) {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
-    public void GoToAddExpense(View v) {
-        Intent i = new Intent(this, NewExpenseActivity.class);
-        startActivity(i);
+
+    public void back(View v) {
+        onBackPressed();
     }
 }
 

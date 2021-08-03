@@ -1,11 +1,16 @@
 package com.example.costsharing;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,54 +18,69 @@ import java.util.List;
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder> {
 
     private final List<Expense> expensesList = new ArrayList<>();
+    private Context mContext;
+    private Cursor mCursor;
+    private TripAdapter.OnItemClickListener listener;
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
+
+    public ExpensesAdapter(Context context, Cursor cursor) {
+        this.mContext = context;
+        this.mCursor = cursor;
+    }
+
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
-         final TextView value;
-         final TextView name;
+        public TextView tvValue;
+        public TextView tvName;
+        public TextView tvPayer;
 
         public ExpenseViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
-            name = (TextView) view.findViewById(R.id.name);
-            value = (TextView) view.findViewById(R.id.value);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvValue = itemView.findViewById(R.id.tv_value);
+            tvPayer = itemView.findViewById(R.id.tv_payer);
         }
-
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public ExpenseViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item_expense, viewGroup, false);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.list_item_expense, viewGroup, false);
         return new ExpenseViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ExpenseViewHolder viewHolder, final int position) {
+        if (!mCursor.moveToPosition(position)) {
+            return;
+        }
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        viewHolder.name.setText(expensesList.get(position).getName());
-        viewHolder.value.setText(Double.toString(expensesList.get(position).getValue()));
+        String name = mCursor.getString(mCursor.getColumnIndex(CostSharingContract.ExpensesTable.COLUMN_ExpName));
+        long expID = mCursor.getLong(mCursor.getColumnIndex(CostSharingContract.ExpensesTable._ID));
+        Double expValue = mCursor.getDouble(mCursor.getColumnIndex(CostSharingContract.ExpensesTable.COLUMN_ExpValue));
+        String payer = "a";
+
+        viewHolder.tvName.setText(name);
+        viewHolder.tvValue.setText(Double.toString(expValue));
+        viewHolder.tvPayer.setText(payer);
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return expensesList.size();
+        return mCursor.getCount();
     }
 
-    public void setExpenses(List<Expense> newExpenses ){
-        this.expensesList.clear();
-        this.expensesList.addAll(newExpenses);
-        notifyDataSetChanged();
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor !=null) {
+            mCursor.close();
+        }
+        mCursor = newCursor;
+        if (newCursor != null) {
+            notifyDataSetChanged();
+        }
     }
+
 
 }

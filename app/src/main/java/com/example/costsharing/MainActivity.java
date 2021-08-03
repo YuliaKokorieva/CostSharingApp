@@ -12,9 +12,7 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase mDatabase;
-
     private TripAdapter mAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new TripAdapter(this, getAllItems(), new TripAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(long id) {
+
                 TripActivity.openActivity(id, MainActivity.this);
             }
         });

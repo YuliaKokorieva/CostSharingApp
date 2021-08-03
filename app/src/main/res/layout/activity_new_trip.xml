@@ -22,6 +22,7 @@
                     android:layout_height="match_parent"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="back"
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

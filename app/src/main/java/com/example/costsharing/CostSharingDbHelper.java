@@ -107,7 +107,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
             if (c!=null) c.close();
         }
         return id;
-
     }
 
     public void addExpense( Expense exp) {
@@ -164,6 +163,60 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         }
         c.close();
         return expList;
+    }
+
+    public List<Participant> getParticipantsForTrip(long TripID) {
+        ArrayList<Participant> partList = new ArrayList<>();
+        db = getReadableDatabase();
+        String query = "SELECT * FROM " + ParticipantsTable.TABLE_NAME + " WHERE " + ParticipantsTable.COLUMN_TripID + " =?";
+        Cursor c = db.rawQuery(query, new String[] {Long.toString(TripID)});
+        if (c.moveToFirst()) {
+            do {
+                Participant part = new Participant();
+                part.setId(c.getInt(c.getColumnIndex(ParticipantsTable._ID)));
+                part.setName(c.getString(c.getColumnIndex(ParticipantsTable.COLUMN_PartName)));
+                part.setTripID(c.getInt(c.getColumnIndex(ParticipantsTable.COLUMN_TripID)));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return partList;
+    }
+
+    public String getPayerNameByID(int PartID) {
+        db = getReadableDatabase();
+        String query = "SELECT " + ParticipantsTable.COLUMN_PartName + " FROM " + ParticipantsTable.TABLE_NAME + " , " + ExpensesTable.TABLE_NAME
+                + " WHERE "  + ParticipantsTable._ID + " = " + ExpensesTable.COLUMN_PartID + " AND " + ParticipantsTable._ID + " =? ";
+        Cursor c = db.rawQuery(query, new String[] {Integer.toString(PartID)});
+
+
+
+        String payerName = "";
+        try {
+            if (c.moveToFirst()){
+                payerName = c.getString(c.getColumnIndexOrThrow(ParticipantsTable.COLUMN_PartName));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c!=null) c.close();
+        }
+        return payerName;
+    }
+
+    public String getTripNameByID(long tripID) {
+        String query = "SELECT * FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable._ID + " =?";
+        Cursor c = db.rawQuery(query, new String[] {Long.toString(tripID)});
+        String tripName = "";
+        try {
+            if (c.moveToFirst()){
+                tripName = c.getString(c.getColumnIndexOrThrow(TripsTable.COLUMN_TripName));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c!=null) c.close();
+        }
+        return tripName;
     }
 
 }
