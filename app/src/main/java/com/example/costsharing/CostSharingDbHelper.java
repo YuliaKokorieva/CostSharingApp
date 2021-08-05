@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.costsharing.CostSharingContract.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,11 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_TRIPS_TABLE = "CREATE TABLE " +
                 TripsTable.TABLE_NAME + " (" +
                 TripsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                TripsTable.COLUMN_TripName + " TEXT NOT NULL" +
-                ");";
+                TripsTable.COLUMN_TripName + " TEXT NOT NULL);";
 
         db.execSQL(SQL_CREATE_TRIPS_TABLE);
 //        fillTripsTable();
+
 
 
         final String SQL_CREATE_PARTICIPANTS_TABLE = "CREATE TABLE " +
@@ -49,7 +50,7 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
                 ParticipantsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ParticipantsTable.COLUMN_PartName + " TEXT," +
                 ParticipantsTable.COLUMN_TripID + " INTEGER," +
-                " FOREIGN KEY ("+ParticipantsTable.COLUMN_TripID+") REFERENCES "+TripsTable.TABLE_NAME+"("+TripsTable._ID+"));";
+                " FOREIGN KEY (" + ParticipantsTable.COLUMN_TripID + ") REFERENCES " + TripsTable.TABLE_NAME + "("+TripsTable._ID+"));";
 
         db.execSQL(SQL_CREATE_PARTICIPANTS_TABLE);
 
@@ -176,19 +177,18 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
                 part.setId(c.getInt(c.getColumnIndex(ParticipantsTable._ID)));
                 part.setName(c.getString(c.getColumnIndex(ParticipantsTable.COLUMN_PartName)));
                 part.setTripID(c.getInt(c.getColumnIndex(ParticipantsTable.COLUMN_TripID)));
+                partList.add(part);
             } while (c.moveToNext());
         }
         c.close();
         return partList;
     }
 
-    public String getPayerNameByID(int PartID) {
+    public String getPayerNameByID(long PartID) {
         db = getReadableDatabase();
         String query = "SELECT " + ParticipantsTable.COLUMN_PartName + " FROM " + ParticipantsTable.TABLE_NAME + " , " + ExpensesTable.TABLE_NAME
                 + " WHERE "  + ParticipantsTable._ID + " = " + ExpensesTable.COLUMN_PartID + " AND " + ParticipantsTable._ID + " =? ";
-        Cursor c = db.rawQuery(query, new String[] {Integer.toString(PartID)});
-
-
+        Cursor c = db.rawQuery(query, new String[] {Long.toString(PartID)});
 
         String payerName = "";
         try {
@@ -202,6 +202,27 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         }
         return payerName;
     }
+
+    public long getPayerIDbyName(String partName) {
+        db = getReadableDatabase();
+        String query = "SELECT " + ParticipantsTable._ID + " FROM " + ParticipantsTable.TABLE_NAME +
+                " WHERE "  + ParticipantsTable.COLUMN_PartName + " =?";
+        Cursor c = db.rawQuery(query, new String[] {partName});
+
+        long id = 0;
+        try {
+            if (c.moveToFirst()){
+                id = c.getLong(c.getColumnIndexOrThrow(ParticipantsTable._ID));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c!=null) c.close();
+        }
+        return id;
+    }
+
+
 
     public String getTripNameByID(long tripID) {
         String query = "SELECT * FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable._ID + " =?";

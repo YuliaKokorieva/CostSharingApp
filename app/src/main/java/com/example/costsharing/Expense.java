@@ -7,11 +7,11 @@ public class Expense {
     private int id;
     private String name;
     private Double value;
-    private int partID;
-    private int tripID;
+    private long partID;
+    private long tripID;
 
     public Expense(){}
-    public Expense(String name, Double value, int partID, int tripID) {
+    public Expense(String name, Double value, int partID, long tripID) {
         this.name = name;
         this.value = value;
         this.partID = partID;
@@ -42,19 +42,19 @@ public class Expense {
         this.value = value;
     }
 
-    public int getPartID() {
+    public long getPartID() {
         return partID;
     }
 
-    public void setPartID(int partID) {
+    public void setPartID(long partID) {
         this.partID = partID;
     }
 
-    public int getTripID() {
+    public long getTripID() {
         return tripID;
     }
 
-    public void setTripID(int tripID) {
+    public void setTripID(long tripID) {
         this.tripID = tripID;
     }
 }

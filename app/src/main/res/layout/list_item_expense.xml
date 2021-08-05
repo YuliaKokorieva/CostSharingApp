@@ -4,27 +4,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:id="@+id/ll_expense">
 
     <TextView
-        android:layout_weight="0.33"
+        android:layout_weight="0.5"
         android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Name"/>
+        android:text="Name"
+        android:textSize="24sp"/>
 
     <TextView
-        android:layout_weight="0.33"
+        android:layout_weight="0.2"
         android:id="@+id/tv_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Value"/>
+        android:text="Value"
+        android:textSize="24sp"/>
 
     <TextView
-        android:layout_weight="0.33"
+        android:layout_weight="0.25"
         android:id="@+id/tv_payer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Payer's name"/>
+        android:text="Payer's name"
+        android:textSize="24sp"/>
 
 </LinearLayout>

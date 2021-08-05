@@ -186,7 +186,7 @@
                     tools:layout_editor_absoluteY="0dp" />
 
                 <EditText
-                    android:id="@+id/et_numb_part"
+                    android:id="@+id/et_value"
                     android:layout_width="153dp"
                     android:layout_height="50dp"
                     android:background="@drawable/text_field_dr"
@@ -201,34 +201,34 @@
                     app:layout_constraintVertical_bias="0.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="40dp">
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_marginLeft="40dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginRight="40dp">-->
 
-                <TextView
-                    android:id="@+id/tv_curr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="Currency:"
-                    android:textColor="@color/dark_navy"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="0dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_curr"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:text="Currency:"-->
+<!--                    android:textColor="@color/dark_navy"-->
+<!--                    android:textSize="15sp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    tools:layout_editor_absoluteY="0dp" />-->
 
-                <Spinner
-                    android:id="@+id/spinner_currency"
-                    android:layout_width="153dp"
-                    android:layout_height="53dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinner_currency"-->
+<!--                    android:layout_width="153dp"-->
+<!--                    android:layout_height="53dp"-->
+<!--                    android:background="@android:drawable/btn_dropdown"-->
+<!--                    android:spinnerMode="dropdown"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -262,7 +262,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
-                android:id="@+id/b_save"
+                android:id="@+id/b_save_exp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
@@ -270,10 +270,8 @@
                 android:layout_marginRight="100dp"
                 android:background="@drawable/button_drawable"
                 android:text="SAVE"
-
+                android:layout_alignParentBottom="true"
                 android:textColor="@color/white" />
-
-
 
 
         </LinearLayout>

@@ -42,7 +42,7 @@ public class NewTripActivity extends AppCompatActivity {
         CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
 
         if (tripName.getText().toString().trim().length() ==0 || part1Name.getText().toString().trim().length() ==0 )  {
-//
+
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Enter name of the trip and at least one participant!",
                     Toast.LENGTH_SHORT);
@@ -66,13 +66,14 @@ public class NewTripActivity extends AppCompatActivity {
                 String newPartName = etPart.getText().toString();
 
                 Participant newPart = new Participant(newPartName, tripID);
+                newPart.setId(i);
 
                 dbHelper.addParticipant(newPart);
+
             }
         }
 
         NewExpenseActivity.openActivity(tripID, NewTripActivity.this);
-
 
     }
 

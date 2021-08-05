@@ -20,8 +20,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
     private final List<Expense> expensesList = new ArrayList<>();
     private Context mContext;
     private Cursor mCursor;
-    private TripAdapter.OnItemClickListener listener;
-
+    CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance();
 
     public ExpensesAdapter(Context context, Cursor cursor) {
         this.mContext = context;
@@ -58,7 +57,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
         String name = mCursor.getString(mCursor.getColumnIndex(CostSharingContract.ExpensesTable.COLUMN_ExpName));
         long expID = mCursor.getLong(mCursor.getColumnIndex(CostSharingContract.ExpensesTable._ID));
         Double expValue = mCursor.getDouble(mCursor.getColumnIndex(CostSharingContract.ExpensesTable.COLUMN_ExpValue));
-        String payer = "a";
+        String payer = dbHelper.getPayerNameByID(mCursor.getLong(mCursor.getColumnIndex(CostSharingContract.ExpensesTable.COLUMN_PartID)));
 
         viewHolder.tvName.setText(name);
         viewHolder.tvValue.setText(Double.toString(expValue));
