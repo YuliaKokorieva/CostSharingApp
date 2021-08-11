@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new TripAdapter(this, getAllItems(), new TripAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(long id) {
-
                 TripActivity.openActivity(id, MainActivity.this);
             }
         });

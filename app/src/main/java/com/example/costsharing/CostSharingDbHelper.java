@@ -5,10 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.example.costsharing.CostSharingContract.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CostSharingDbHelper extends SQLiteOpenHelper {
 
@@ -21,7 +22,7 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
 
     private CostSharingDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getWritableDatabase(); // Fix from here: https://stackoverflow.com/questions/5024223/sqliteopenhelper-failing-to-call-oncreate
+        db = getWritableDatabase();
     }
 
     static public CostSharingDbHelper getInstance(Context context) {
@@ -41,9 +42,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
                 TripsTable.COLUMN_TripName + " TEXT NOT NULL);";
 
         db.execSQL(SQL_CREATE_TRIPS_TABLE);
-//        fillTripsTable();
-
-
 
         final String SQL_CREATE_PARTICIPANTS_TABLE = "CREATE TABLE " +
                 ParticipantsTable.TABLE_NAME + " (" +
@@ -53,7 +51,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
                 " FOREIGN KEY (" + ParticipantsTable.COLUMN_TripID + ") REFERENCES " + TripsTable.TABLE_NAME + "("+TripsTable._ID+"));";
 
         db.execSQL(SQL_CREATE_PARTICIPANTS_TABLE);
-
 
         final String SQL_CREATE_EXPENSES_TABLE = "CREATE TABLE " +
                 ExpensesTable.TABLE_NAME + " (" +
@@ -66,7 +63,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
                 " FOREIGN KEY ("+ExpensesTable.COLUMN_PartID+") REFERENCES "+ParticipantsTable.TABLE_NAME+"("+ParticipantsTable._ID+"));";
 
         db.execSQL(SQL_CREATE_EXPENSES_TABLE);
-
     }
 
     @Override
@@ -81,11 +77,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
-    }
-
-    private void fillTripsTable() {
-        Trip t1 = new Trip("Croatia 2020");
-        addTrip(t1);
     }
 
     public void addTrip(Trip trip) {
@@ -126,46 +117,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         db.insert(ParticipantsTable.TABLE_NAME, null, cv);
     }
 
-
-    public List<Trip> getAllTrips() {
-        List<Trip> tripsList = new ArrayList<>();
-        db=getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + TripsTable.TABLE_NAME, null);
-
-        if (c.moveToFirst()) {
-            do {
-                Trip trip = new Trip();
-                trip.setName(c.getString(c.getColumnIndex(TripsTable.COLUMN_TripName)));
-                tripsList.add(trip);
-            } while (c.moveToNext());
-        }
-        c.close();
-        return tripsList;
-    }
-
-    public List<Expense> getExpensesForTrip(int TripID) {
-        ArrayList<Expense> expList = new ArrayList<>();
-        db = getReadableDatabase();
-        String query = "SELECT * FROM " + ExpensesTable.TABLE_NAME +
-                " WHERE " + ExpensesTable.COLUMN_TripID + " =?";
-
-        Cursor c  = db.rawQuery(query, new String[] { Integer.toString(TripID) });
-
-        if (c.moveToFirst()) {
-            do {
-                Expense exp = new Expense();
-                exp.setId(c.getInt(c.getColumnIndex(ExpensesTable._ID)));
-                exp.setName(c.getString(c.getColumnIndex(ExpensesTable.COLUMN_ExpName)));
-                exp.setValue(c.getDouble(c.getColumnIndex(ExpensesTable.COLUMN_ExpValue)));
-                exp.setPartID(c.getInt(c.getColumnIndex(ExpensesTable.COLUMN_PartID)));
-                exp.setTripID(c.getInt(c.getColumnIndex(ExpensesTable.COLUMN_TripID)));
-                expList.add(exp);
-            } while (c.moveToNext());
-        }
-        c.close();
-        return expList;
-    }
-
     public List<Participant> getParticipantsForTrip(long TripID) {
         ArrayList<Participant> partList = new ArrayList<>();
         db = getReadableDatabase();
@@ -186,8 +137,7 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
 
     public String getPayerNameByID(long PartID) {
         db = getReadableDatabase();
-        String query = "SELECT " + ParticipantsTable.COLUMN_PartName + " FROM " + ParticipantsTable.TABLE_NAME + " , " + ExpensesTable.TABLE_NAME
-                + " WHERE "  + ParticipantsTable._ID + " = " + ExpensesTable.COLUMN_PartID + " AND " + ParticipantsTable._ID + " =? ";
+        String query = "SELECT " + ParticipantsTable.COLUMN_PartName + " FROM " +  ParticipantsTable.TABLE_NAME + " WHERE " + ParticipantsTable._ID + " =? ";
         Cursor c = db.rawQuery(query, new String[] {Long.toString(PartID)});
 
         String payerName = "";
@@ -222,8 +172,6 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
-
-
     public String getTripNameByID(long tripID) {
         String query = "SELECT * FROM " + TripsTable.TABLE_NAME + " WHERE " + TripsTable._ID + " =?";
         Cursor c = db.rawQuery(query, new String[] {Long.toString(tripID)});
@@ -239,5 +187,56 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
         }
         return tripName;
     }
+    public Cursor getExpensesForTripCursor(long tripID) {
+        String query = "SELECT * FROM " + CostSharingContract.ExpensesTable.TABLE_NAME +
+                " WHERE " + CostSharingContract.ExpensesTable.COLUMN_TripID + " =?";
 
+        Cursor c  = db.rawQuery(query, new String[] { Long.toString(tripID) });
+        return c;
+    }
+
+    public String countSummary(long tripID) {
+        String summaryText ="";
+        String partName;
+        Double partPaid;
+        Double total = 0.0;
+        Map<String, Double> paidByParticipant = new TreeMap<String, Double>();
+
+        List<Participant> partList = getParticipantsForTrip(tripID);
+        for ( Participant part : partList) {
+            long partID = part.getId();
+            partName = part.getName();
+            String query = "SELECT SUM(" + ExpensesTable.COLUMN_ExpValue + ") FROM " + ExpensesTable.TABLE_NAME + " WHERE " + ExpensesTable.COLUMN_TripID + " =? AND " + ExpensesTable.COLUMN_PartID + " =?";
+            Cursor c = db.rawQuery(query, new String[] {Long.toString(tripID), Long.toString(partID)});
+            try {
+                if (c.moveToFirst()){
+                    partPaid = c.getDouble(0);
+                    paidByParticipant.put(partName, partPaid);
+                    total+=partPaid;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (c!=null) c.close();
+            }
+        }
+        summaryText+= "Total is " + total + "\r\n\n";
+
+        int num = paidByParticipant.size();
+        Double equalShare = total / num;
+
+        for (Map.Entry m : paidByParticipant.entrySet()) {
+            partPaid = (Double) m.getValue();
+            Double result = partPaid - equalShare;
+            if (result>0) {
+                summaryText+=(String) m.getKey() + " is owed " + result + "\r\n";
+            } else if (result<0) {
+                summaryText+=(String) m.getKey() + " owes " + -result + "\r\n";
+            } else {
+                summaryText+=(String) m.getKey() + " doesn't owe and is not owed anything\n";
+            }
+        }
+
+        return summaryText.substring(0, summaryText.length()-2);
+    }
 }

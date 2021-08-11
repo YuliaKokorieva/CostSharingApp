@@ -19,13 +19,12 @@ import java.util.List;
 
 public class TripActivity extends AppCompatActivity {
 
-    private SQLiteDatabase mDatabase;
     private ExpensesAdapter mAdapter;
     RecyclerView rvExpenses;
     private static final String ID_KEY = "idKey";
     private TextView tripHeader;
     private Button bNewExp;
-
+    private TextView tvSummary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +33,13 @@ public class TripActivity extends AppCompatActivity {
         long id = getIntent().getLongExtra(ID_KEY, -1);
 
         CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
-        mDatabase = dbHelper.getReadableDatabase();
 
         tripHeader = findViewById(R.id.tv_trip_header);
         tripHeader.setText("Trip: " + dbHelper.getTripNameByID(id));
 
         rvExpenses = findViewById(R.id.rv_expenses);
         rvExpenses.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ExpensesAdapter(this, getAllItems());
+        mAdapter = new ExpensesAdapter(this, dbHelper.getExpensesForTripCursor(id), dbHelper);
         rvExpenses.setAdapter(mAdapter);
 
         bNewExp = findViewById(R.id.b_new_expense);
@@ -52,6 +50,9 @@ public class TripActivity extends AppCompatActivity {
                 NewExpenseActivity.openActivity(id, TripActivity.this);
             }
         });
+
+        tvSummary = findViewById(R.id.tv_trip_summary);
+        tvSummary.setText(dbHelper.countSummary(id));
     }
 
     public void BackToMain(View v) {
@@ -59,22 +60,13 @@ public class TripActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-//    public void onAllExpensesGot(List<Expense> expenses){
-//        adapter.setExpenses(expenses);
-//    }
-
     public static void openActivity(long id, Context context){
         Intent i = new Intent(context, TripActivity.class);
         i.putExtra(ID_KEY, id);
         context.startActivity(i);
     }
 
-    private Cursor getAllItems() {
-        return mDatabase.query(
-                CostSharingContract.ExpensesTable.TABLE_NAME,
-                null, null, null, null, null, null
-        );
+    public void back(View v) {
+        onBackPressed();
     }
-
-    
 }

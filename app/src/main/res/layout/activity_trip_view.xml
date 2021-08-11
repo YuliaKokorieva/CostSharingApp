@@ -120,6 +120,16 @@
                     tools:layout_editor_absoluteY="0dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_trip_summary"
+                android:textSize="16sp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                />
+
             <Button
                 android:id="@+id/b_new_expense"
                 android:layout_width="match_parent"
@@ -149,7 +159,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_expenses"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:paddingLeft="35dp"
+                />
 
         </LinearLayout>
 

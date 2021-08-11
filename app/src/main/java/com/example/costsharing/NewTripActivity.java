@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NewTripActivity extends AppCompatActivity {
     private SQLiteDatabase trDatabase;
     private EditText tripName;
@@ -66,8 +69,6 @@ public class NewTripActivity extends AppCompatActivity {
                 String newPartName = etPart.getText().toString();
 
                 Participant newPart = new Participant(newPartName, tripID);
-                newPart.setId(i);
-
                 dbHelper.addParticipant(newPart);
 
             }
@@ -87,35 +88,3 @@ public class NewTripActivity extends AppCompatActivity {
         onBackPressed();
     }
 }
-
-
-//        participantsFrame = findViewById(R.id.participants_frame);
-
-
-//    public void inflateList(){
-//
-//    }
-
-//    public void onAddNewParticipant(View v){
-//        Participant p = new Participant();
-//        participants.add(p);
-//        ParticipantView view = new ParticipantView(this);
-//        view.setNameTypedListener(new OnNameTypedListener() {
-//            @Override
-//            public void onNameTyped(String name) {
-//                String id = p.getId();
-//                int i = -1;
-//                for (int j = 0; j < participants.size(); j++){
-//                    if (participants.get(j).getId().equals(id))
-//                        i = j;
-//                }
-//                if (i!=-1){
-//                   Participant participantToEdit = participants.get(i);
-//                   participantToEdit.setName(name);
-//                   participants.set(i, participantToEdit);
-//                }
-//            }
-//        });
-//        view.inflateView(p, ++count);
-//        participantsFrame.addView(view);
-//    }

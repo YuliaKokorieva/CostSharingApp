@@ -30,6 +30,7 @@ public class NewExpenseActivity extends AppCompatActivity implements
     private EditText etExpName;
     private EditText etExpValue;
     long id;
+    private Spinner spinnerPayer;
 
     private Button bSaveExp;
     CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
@@ -40,30 +41,14 @@ public class NewExpenseActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_new_expense);
         id = getIntent().getLongExtra(ID_KEY, -1);
 
-
-        tripInfo = findViewById(R.id.tv_TripInfo);
-        String textTrip = "Trip name: " + dbHelper.getTripNameByID(id) + "\r\nParticipants names: ";
         List<Participant> partList = dbHelper.getParticipantsForTrip(id);
         List<String> sPartList = new ArrayList<String>();
         for (Participant part : partList) {
             sPartList.add(part.getName());
-            textTrip += part.getName() + ", ";
         }
-        tripInfo.setText(textTrip);
 
-//        final Spinner spinner = (Spinner) findViewById(R.id.spinner_currency);
-//        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-//
-//        List<String> currencies = new ArrayList<String>();
-//        currencies.add("EUR");
-//        currencies.add("USD");
-//        currencies.add("UAH");
-//
-//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currencies);
-//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(dataAdapter);
+        spinnerPayer= findViewById(R.id.spinner_paidby);
 
-        final Spinner spinnerPayer = (Spinner) findViewById(R.id.spinner_paidby);
         spinnerPayer.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
         ArrayAdapter<String> dataAdapterPart = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sPartList);
@@ -79,7 +64,6 @@ public class NewExpenseActivity extends AppCompatActivity implements
                 TripActivity.openActivity(id, NewExpenseActivity.this);
             }
         });
-
     }
 
     @Override
@@ -98,7 +82,6 @@ public class NewExpenseActivity extends AppCompatActivity implements
                 "Select payer!",
                 Toast.LENGTH_SHORT);
         toast.show();
-
     }
 
     public void BackToMain(View v) {
@@ -115,7 +98,6 @@ public class NewExpenseActivity extends AppCompatActivity implements
     public void saveExpense() {
         etExpName = findViewById(R.id.et_name);
         etExpValue = findViewById(R.id.et_value);
-
 
         if (etExpName.getText().toString().trim().length() ==0 || etExpValue.getText().toString().trim().length() ==0 )  {
 
@@ -136,6 +118,7 @@ public class NewExpenseActivity extends AppCompatActivity implements
         exp.setPartID(dbHelper.getPayerIDbyName(payerName));
         dbHelper.addExpense(exp);
     }
-
-
+    public void back(View v) {
+        onBackPressed();
+    }
 }
