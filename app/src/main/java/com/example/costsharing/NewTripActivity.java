@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewTripActivity extends AppCompatActivity {
-    private SQLiteDatabase trDatabase;
-    private EditText tripName;
-    private EditText part1Name;
-    private Button bSave;
 
 
     @Override
@@ -26,7 +22,7 @@ public class NewTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
 
-        bSave = findViewById(R.id.b_save);
+        Button bSave = findViewById(R.id.b_save);
 
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,8 +33,8 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     private void saveItem() {
-        tripName = findViewById(R.id.et_name);
-        part1Name = findViewById(R.id.et_part1);
+        EditText tripName = findViewById(R.id.et_name);
+        EditText part1Name = findViewById(R.id.et_part1);
 
         int tripID;
 

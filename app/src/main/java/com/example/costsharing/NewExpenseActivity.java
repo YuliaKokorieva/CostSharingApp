@@ -22,17 +22,8 @@ public class NewExpenseActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
 
     private static final String ID_KEY = "idKey";
-    private TextView tripInfo;
     private String payerName;
-    private String expName;
-    private double expValue;
-    private int partID;
-    private EditText etExpName;
-    private EditText etExpValue;
     long id;
-    private Spinner spinnerPayer;
-
-    private Button bSaveExp;
     CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
 
     @Override
@@ -47,7 +38,7 @@ public class NewExpenseActivity extends AppCompatActivity implements
             sPartList.add(part.getName());
         }
 
-        spinnerPayer= findViewById(R.id.spinner_paidby);
+        Spinner spinnerPayer = findViewById(R.id.spinner_paidby);
 
         spinnerPayer.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
@@ -55,7 +46,7 @@ public class NewExpenseActivity extends AppCompatActivity implements
         dataAdapterPart.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPayer.setAdapter(dataAdapterPart);
 
-        bSaveExp = findViewById(R.id.b_save_exp);
+        Button bSaveExp = findViewById(R.id.b_save_exp);
         bSaveExp.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -96,8 +87,8 @@ public class NewExpenseActivity extends AppCompatActivity implements
     }
 
     public void saveExpense() {
-        etExpName = findViewById(R.id.et_name);
-        etExpValue = findViewById(R.id.et_value);
+        EditText etExpName = findViewById(R.id.et_name);
+        EditText etExpValue = findViewById(R.id.et_value);
 
         if (etExpName.getText().toString().trim().length() ==0 || etExpValue.getText().toString().trim().length() ==0 )  {
 
@@ -108,8 +99,8 @@ public class NewExpenseActivity extends AppCompatActivity implements
             return;
         }
 
-        expName = etExpName.getText().toString();
-        expValue = Double.parseDouble(etExpValue.getText().toString());
+        String expName = etExpName.getText().toString();
+        double expValue = Double.parseDouble(etExpValue.getText().toString());
 
         Expense exp = new Expense();
         exp.setName(expName);

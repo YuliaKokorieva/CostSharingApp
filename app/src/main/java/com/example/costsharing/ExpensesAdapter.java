@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
     private Cursor mCursor;
     CostSharingDbHelper dbHelper;
 

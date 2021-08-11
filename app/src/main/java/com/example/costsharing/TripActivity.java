@@ -19,12 +19,8 @@ import java.util.List;
 
 public class TripActivity extends AppCompatActivity {
 
-    private ExpensesAdapter mAdapter;
     RecyclerView rvExpenses;
     private static final String ID_KEY = "idKey";
-    private TextView tripHeader;
-    private Button bNewExp;
-    private TextView tvSummary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +30,15 @@ public class TripActivity extends AppCompatActivity {
 
         CostSharingDbHelper dbHelper = CostSharingDbHelper.getInstance(this);
 
-        tripHeader = findViewById(R.id.tv_trip_header);
+        TextView tripHeader = findViewById(R.id.tv_trip_header);
         tripHeader.setText("Trip: " + dbHelper.getTripNameByID(id));
 
         rvExpenses = findViewById(R.id.rv_expenses);
         rvExpenses.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ExpensesAdapter(this, dbHelper.getExpensesForTripCursor(id), dbHelper);
+        ExpensesAdapter mAdapter = new ExpensesAdapter(this, dbHelper.getExpensesForTripCursor(id), dbHelper);
         rvExpenses.setAdapter(mAdapter);
 
-        bNewExp = findViewById(R.id.b_new_expense);
+        Button bNewExp = findViewById(R.id.b_new_expense);
         bNewExp.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -51,7 +47,7 @@ public class TripActivity extends AppCompatActivity {
             }
         });
 
-        tvSummary = findViewById(R.id.tv_trip_summary);
+        TextView tvSummary = findViewById(R.id.tv_trip_summary);
         tvSummary.setText(dbHelper.countSummary(id));
     }
 

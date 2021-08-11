@@ -15,9 +15,7 @@ public class CostSharingDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "CostSharing.db";
     public static final int DATABASE_VERSION = 1;
-
     private SQLiteDatabase db;
-
     private static CostSharingDbHelper instance;
 
     private CostSharingDbHelper(Context context) {

@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
-    private Context mContext;
+    private final Context mContext;
     private Cursor mCursor;
-    private OnItemClickListener listener;
+    private final OnItemClickListener listener;
 
     public TripAdapter(Context context, Cursor cursor, OnItemClickListener listener) {
         this.mContext = context;
