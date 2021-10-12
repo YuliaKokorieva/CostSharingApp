@@ -1,2 +1,2 @@
 # CostSharingApp
-Android App created as Course project at Haaga-Helia
+Android App created as course project at Haaga-Helia
